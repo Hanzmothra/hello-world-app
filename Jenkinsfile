@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/your-repo/hello-world-app.git', credentialsId: 'github-credentials'
+                git 'https://github.com/iqbalrabani/hello-world-app.git', credentialsId: 'github-credentials'
             }
         }
         
