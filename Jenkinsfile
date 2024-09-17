@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git url: 'https://github.com/iqbalrabani/hello-world-app.git', branch: 'main', credentialsId: 'github-credentials'
+                git url: 'https://github.com/iqbalrabani/hello-world-app.git', branch: 'main'
             }
         }
         
