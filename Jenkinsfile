@@ -10,27 +10,26 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("hello-world-app")
+                    sh 'docker build -t hello-world-app .'
                 }
             }
         }
-        
+
         stage('Run Unit Tests') {
             steps {
                 script {
-                    dockerImage.inside {
-                        sh 'npm config set cache $(pwd)/.npm-cache --global'
-                        sh 'npm install'
-                        sh 'npm test'
-                    }
+                    sh '''
+                        docker run --name hello-world-test-container hello-world-app sh -c "npm install && npm test"
+                    '''
+                    sh 'docker rm -f hello-world-test-container'
                 }
             }
         }
-        
+
         stage('Deploy to Production') {
             steps {
                 script {
-                    dockerImage.run('-p 3000:3000')
+                    sh 'docker run -d -p 3000:3000 hello-world-app'
                 }
             }
         }
