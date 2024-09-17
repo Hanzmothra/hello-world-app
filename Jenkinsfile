@@ -28,7 +28,14 @@ pipeline {
         stage('Deploy to Production') {
             steps {
                 script {
-                    dockerImage.run('-p 3000:3000')
+                    sh '''
+                        CONTAINER_ID=$(docker ps -q --filter "publish=3000")
+                        if [ ! -z "$CONTAINER_ID" ]; then
+                            docker stop $CONTAINER_ID
+                            docker rm $CONTAINER_ID
+                        fi
+                    '''
+                    dockerImage.run('-d -p 3000:3000')
                 }
             }
         }
