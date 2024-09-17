@@ -18,18 +18,17 @@ pipeline {
         stage('Run Unit Tests') {
             steps {
                 script {
-                    sh '''
-                        docker run --name hello-world-test-container hello-world-app sh -c "npm install && npm test"
-                    '''
-                    sh 'docker rm -f hello-world-test-container'
+                    dockerImage.inside {
+                        sh 'npm install'
+                        sh 'npm test'
+                    }
                 }
             }
         }
-
         stage('Deploy to Production') {
             steps {
                 script {
-                    sh 'docker run -d -p 3000:3000 hello-world-app'
+                    dockerImage.run('-p 3000:3000')
                 }
             }
         }
