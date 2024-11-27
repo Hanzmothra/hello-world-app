@@ -17,8 +17,7 @@ pipeline {
             steps {
                 script {
                     dockerImage.inside {
-                        sh 'npm config set cache /var/lib/jenkins/.npm --global'
-                        sh 'npm install --no-cache --unsafe-perm'
+                        sh 'npm install'
                         sh 'npm test'
                     }
                 }
