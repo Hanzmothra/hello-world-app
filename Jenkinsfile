@@ -3,10 +3,9 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git url: 'https://github.com/iqbalrabani/hello-world-app.git', branch: 'main'
+                git url: 'https://github.com/Hanzmothra/hello-world-app.git', branch: 'main'
             }
-        }
-        
+        }        
         stage('Build Docker Image') {
             steps {
                 script {
@@ -14,7 +13,6 @@ pipeline {
                 }
             }
         }
-
         stage('Run Unit Tests') {
             steps {
                 script {
@@ -28,14 +26,7 @@ pipeline {
         stage('Deploy to Production') {
             steps {
                 script {
-                    sh '''
-                        CONTAINER_ID=$(docker ps -q --filter "publish=3000")
-                        if [ ! -z "$CONTAINER_ID" ]; then
-                            docker stop $CONTAINER_ID
-                            docker rm $CONTAINER_ID
-                        fi
-                    '''
-                    dockerImage.run('-d -p 3000:3000')
+                    dockerImage.run('-p 3000:3000')
                 }
             }
         }
